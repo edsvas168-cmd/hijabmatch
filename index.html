@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HijabMatch — Find Your Colors</title>
+<style>
+:root {
+  --bg: #fbf8f4;
+  --ink: #302d2a;
+  --muted: #81766e;
+  --accent: #75816a;
+  --line: #e9e1d8;
+  --rose: #ead6d0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, Arial, sans-serif;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 23px 7%;
+  border-bottom: 1px solid var(--line);
+}
+.logo { font-family: Georgia, serif; font-size: 25px; }
+.logo span { color: var(--accent); }
+nav { display: flex; gap: 25px; font-size: 13px; }
+nav a { color: var(--ink); text-decoration: none; }
+.hero {
+  max-width: 1150px;
+  margin: auto;
+  padding: 65px 24px 45px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 45px;
+  align-items: center;
+}
+.eyebrow {
+  color: var(--accent);
+  letter-spacing: 3px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+h1 {
+  font: 500 clamp(42px, 6vw, 70px)/1.06 Georgia, serif;
+  letter-spacing: -2px;
+  margin: 20px 0;
+}
+h1 em { color: var(--accent); font-weight: 400; }
+p { line-height: 1.8; color: var(--muted); font-size: 14px; }
+.hero p { max-width: 440px; }
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 15px 23px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: none;
+}
+.hero-art {
+  background: #eee5da;
+  min-height: 390px;
+  border-radius: 48% 48% 5px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.art-circle {
+  width: 185px;
+  height: 225px;
+  border-radius: 48% 48% 42% 42%;
+  background: #b7a18e;
+  display: grid;
+  place-items: center;
+  font-size: 68px;
+  margin-bottom: 20px;
+  border: 9px solid #d4c4b3;
+}
+.art-note { font: 22px Georgia, serif; }
+main { max-width: 1000px; margin: auto; padding: 20px 24px 70px; }
+.section-head { margin: 35px 0 25px; }
+h2 { font: 36px Georgia, serif; font-weight: 400; margin: 12px 0; }
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 26px;
+  margin-bottom: 22px;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.step {
+  background: #f8f4ef;
+  border-radius: 6px;
+  padding: 15px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.step strong { display: block; color: var(--ink); margin-bottom: 6px; }
+label { font-size: 13px; display: block; margin-bottom: 10px; }
+.upload {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.preview {
+  width: 110px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 7px;
+  background: #f2ebe3;
+  border: 1px dashed #cfc2b5;
+}
+input[type=file] { max-width: 100%; font-size: 12px; }
+.undertones { display: flex; flex-wrap: wrap; gap: 10px; }
+.choice {
+  padding: 11px 16px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: white;
+  cursor: pointer;
+  color: var(--ink);
+}
+.choice.active {
+  background: #e7ebdf;
+  border-color: var(--accent);
+}
+.palette {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+.swatch {
+  height: 100px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 3px solid transparent;
+}
+.swatch.active { border-color: var(--ink); outline: 2px solid white; }
+.color-name { font-size: 12px; margin-top: 9px; font-weight: 600; }
+.color-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.result {
+  display: none;
+  margin-top: 24px;
+  padding: 20px;
+  background: #f6f2eb;
+  border-radius: 6px;
+}
+.result.show { display: block; }
+.selected-chip {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.shop {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 18px;
+  background: white;
+}
+.shop-icon { font-size: 26px; }
+.shop h3 { font: 21px Georgia, serif; font-weight: 400; }
+.shop p { font-size: 12px; }
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 7%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media(max-width:700px) {
+  nav { gap: 12px; font-size: 11px; }
+  .hero { grid-template-columns: 1fr; padding-top: 40px; gap: 25px; }
+  .hero-art { min-height: 270px; }
+  .art-circle { width: 130px; height: 150px; font-size: 50px; }
+  .steps { grid-template-columns: 1fr; }
+  .palette { grid-template-columns: repeat(2, 1fr); }
+  .shop-grid { grid-template-columns: 1fr; }
+  h2 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Hijab<span>Match</span></div>
+  <nav>
+    <a href="#discover">Discover</a>
+    <a href="#palette">Color guide</a>
+    <a href="#shop">Shopping</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">Your personal hijab color guide</div>
+    <h1>Find the colors<br>that feel <em>like you.</em></h1>
+    <p>
+      Discover hijab shades to explore, find inspiration for your outfits,
+      and make your next scarf choice with more confidence.
+      Created by a hijab wearer, for hijab wearers.
+    </p>
+    <a class="button" href="#discover">Find my colors &nbsp; →</a>
+  </div>
+  <div class="hero-art">
+    <div class="art-circle">✿</div>
+    <div class="art-note">A little more you, every day.</div>
+    <p>Personal style begins with a color.</p>
+  </div>
+</section>
+
+<main>
+  <section id="discover">
+    <div class="section-head">
+      <div class="eyebrow">01 — Discover your palette</div>
+      <h2>Let's find your colors</h2>
+      <p>Upload a photo for your styling session, then choose a tone to explore a personalized color palette.</p>
+    </div>
+
+    <div class="panel">
+      <label><strong>Your photo</strong></label>
+      <div class="upload">
+        <img id="preview" class="preview" alt="Your photo preview"
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='130'%3E%3Crect width='100%25' height='100%25' fill='%23f2ebe3'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='30' fill='%23978b7c'%3E%2B%3C/text%3E%3C/svg%3E">
+        <div>
+          <input id="photo" type="file" accept="image/*">
+          <p>Choose a well-lit photo. In this demo, your image is only previewed in this browser; it is not uploaded to an AI service.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <label><strong>Which description feels closest to your skin tone?</strong></label>
+      <p>This is a starting point for exploring colors, not an automatic skin analysis.</p>
+      <div class="undertones">
+        <button class="choice active" data-tone="warm">Warm / golden</button>
+        <button class="choice" data-tone="cool">Cool / rosy</button>
+        <button class="choice" data-tone="neutral">Neutral / balanced</button>
+        <button class="choice" data-tone="deep">Deep / rich</button>
+      </div>
+      <div class="steps">
+        <div class="step"><strong>01. Explore</strong>Choose a tone to begin.</div>
+        <div class="step"><strong>02. Discover</strong>Explore suggested scarf colors.</div>
+        <div class="step"><strong>03. Style</strong>Choose a shade you love.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="palette">
+    <div class="section-head">
+      <div class="eyebrow">02 — Your color inspiration</div>
+      <h2>Colors to fall in love with</h2>
+      <p id="palette-intro">Explore warm, earthy colors and find your favorite.</p>
+    </div>
+    <div class="panel">
+      <div id="palette-grid" class="palette"></div>
+      <div id="result" class="result">
+        <div class="eyebrow">Your selected shade</div>
+        <h2 id="selected-name">Olive Green</h2>
+        <p id="selected-desc"></p>
+        <p><span id="selected-chip" class="selected-chip"></span>
+          <span id="selected-hex"></span></p>
+        <button class="button" onclick="copyColor()">Copy color code</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop">
+    <div class="section-head">
+      <div class="eyebrow">03 — From inspiration to your wardrobe</div>
+      <h2>Your next favorite hijab</h2>
+      <p>Our future goal is to connect color inspiration with real products from online stores.</p>
+    </div>
+    <div class="shop-grid">
+      <div class="shop">
+        <div class="shop-icon">✿</div>
+        <h3>Everyday essentials</h3>
+        <p>Explore soft, versatile shades for everyday outfits.</p>
+        <span class="eyebrow">Store links coming soon</span>
+      </div>
+      <div class="shop">
+        <div class="shop-icon">❋</div>
+        <h3>Elegant occasions</h3>
+        <p>Discover rich colors for special moments and celebrations.</p>
+        <span class="eyebrow">Store links coming soon</span>
+      </div>
+      <div class="shop">
+        <div class="shop-icon">✧</div>
+        <h3>Build your palette</h3>
+        <p>Save your favorite color ideas for your next shopping trip.</p>
+        <span class="eyebrow">More features coming soon</span>
+      </div>
+    </div>
+  </section>
+  <p style="font-size:11px">Color suggestions are for inspiration only. Personal preference, lighting, fabric, and outfit colors can all influence how a shade looks.</p>
+</main>
+
+<footer>
+  <div class="logo">Hijab<span>Match</span></div>
+  <div>Created with care by a hijab wearer.</div>
+  <div>Early prototype · 2026</div>
+</footer>
+
+<script>
+const palettes = {
+  warm: {
+    intro: "Warm, earthy shades to explore with golden and warm-toned looks.",
+    colors: [
+      ["Olive Green","#78805B","Pairs beautifully with cream, beige and brown."],
+      ["Terracotta","#BD755D","A warm accent for neutral outfits."],
+      ["Cream","#F0E3C9","A soft, timeless everyday option."],
+      ["Mocha","#80604F","A rich neutral for effortless styling."],
+      ["Sage","#A8AE91","A gentle green for a calm look."],
+      ["Rust","#A54F35","A deeper, expressive warm shade."],
+      ["Camel","#C5A176","Easy to combine with earthy colors."],
+      ["Teal","#397D78","A contrasting color to experiment with."]
+    ]
+  },
+  cool: {
+    intro: "Try rosy, jewel and cool neutral shades as a starting point.",
+    colors: [
+      ["Dusty Rose","#C78F98","A muted pink for soft styling."],
+      ["Lavender","#B6A7CC","A delicate shade to explore."],
+      ["Navy","#303E60","A versatile deep blue."],
+      ["Berry","#8D405C","A rich accent for simple outfits."],
+      ["Silver Grey","#B7B7BC","A cool neutral for layering."],
+      ["Plum","#69466E","A deeper, elegant option."],
+      ["Powder Blue","#B7D0E0","A light shade for fresh looks."],
+      ["Soft White","#F2F0EB","A clean neutral to experiment with."]
+    ]
+  },
+  neutral: {
+    intro: "Balanced neutrals and a mix of warm and cool shades to explore.",
+    colors: [
+      ["Taupe","#A59587","An easy shade for everyday wear."],
+      ["Mauve","#AD879B","A muted color with personality."],
+      ["Sage","#A8AE91","A relaxed, nature-inspired option."],
+      ["Chocolate","#684B3B","A rich, versatile neutral."],
+      ["Dusty Blue","#7F9EB4","A calm alternative to grey."],
+      ["Rose","#C78D91","A soft accent color."],
+      ["Sand","#D6C1A2","A gentle neutral for layering."],
+      ["Teal","#397D78","A colorful option to try."]
+    ]
+  },
+  deep: {
+    intro: "Explore rich jewel tones, deep neutrals and luminous contrasts.",
+    colors: [
+      ["Emerald","#176B55","A vivid, rich green."],
+      ["Burgundy","#762F46","A classic deep accent."],
+      ["Cobalt","#3156A4","A striking blue to experiment with."],
+      ["Mustard","#C79C36","A warm, bright statement shade."],
+      ["Ivory","#F0E4CC","A light contrast for deeper colors."],
+      ["Plum","#69466E","A rich, elegant purple."],
+      ["Forest","#285744","A deep, nature-inspired green."],
+      ["Copper","#B96F4A","A warm accent for creative outfits."]
+    ]
+  }
+};
+let currentTone = "warm";
+let selectedColor = null;
+
+function renderPalette() {
+  const data = palettes[currentTone];
+  document.getElementById("palette-intro").textContent = data.intro;
+  document.getElementById("palette-grid").innerHTML = data.colors.map((c,i) => `
+    <div>
+      <div class="swatch ${selectedColor && selectedColor[0]===c[0] ? "active":""}"
+        style="background:${c[1]}" role="button" tabindex="0"
+        aria-label="Choose ${c[0]}" onclick="selectColor(${i})"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectColor(${i})}"></div>
+      <div class="color-name">${c[0]}</div>
+      <div class="color-desc">${c[2]}</div>
+    </div>`).join("");
+}
+function selectColor(i) {
+  selectedColor = palettes[currentTone].colors[i];
+  document.getElementById("selected-name").textContent = selectedColor[0];
+  document.getElementById("selected-desc").textContent = selectedColor[2];
+  document.getElementById("selected-chip").style.background = selectedColor[1];
+  document.getElementById("selected-hex").textContent = selectedColor[1];
+  document.getElementById("result").classList.add("show");
+  renderPalette();
+}
+document.querySelectorAll(".choice").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".choice").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
+    currentTone = button.dataset.tone;
+    selectedColor = null;
+    document.getElementById("result").classList.remove("show");
+    renderPalette();
+  });
+});
+document.getElementById("photo").addEventListener("change", event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    alert("Please choose an image file.");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => document.getElementById("preview").src = e.target.result;
+  reader.readAsDataURL(file);
+});
+function copyColor() {
+  if (!selectedColor) return;
+  const hex = selectedColor[1];
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(hex).then(() => alert("Copied: " + hex))
+      .catch(() => prompt("Copy this color code:", hex));
+  } else {
+    prompt("Copy this color code:", hex);
+  }
+}
+renderPalette();
+</script>
+</body>
+</html>

@@ -23,3 +23,6 @@
 - Favorites are saved in the current browser only; they do not sync across devices.
 
 Next stage: connect the documented YouCam scarf virtual try-on flow securely after the product flow and reference images are ready. Keep `YOUCAM_API_KEY` on the server only.
+
+## Shop your shade (no API usage)
+The Shop section lets visitors choose one of the curated palette colors and opens an AliExpress search for matching scarf terms. These are retailer search links, not verified individual product listings or affiliate links. Replace with approved affiliate URLs only after joining a program and confirming its rules. No YouCam API calls are made by this section.

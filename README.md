@@ -26,3 +26,7 @@ Next stage: connect the documented YouCam scarf virtual try-on flow securely aft
 
 ## Shop your shade (no API usage)
 The Shop section lets visitors choose one of the curated palette colors and opens an AliExpress search for matching scarf terms. These are retailer search links, not verified individual product listings or affiliate links. Replace with approved affiliate URLs only after joining a program and confirming its rules. No YouCam API calls are made by this section.
+
+
+## Photo edition (v4)
+This version adds editorial hijab portraits, fabric close-ups, and real-photo backgrounds to the lookbook. Images are loaded from their source websites, so an internet connection is required and third-party hosts may change their URLs. Before a public/commercial launch, review each source's image license/permission and replace any image that is not cleared for your use. These are inspiration photos, not AI try-on results. No YouCam API requests are made by this version.

@@ -1,449 +1,270 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HijabMatch — Find Your Colors</title>
+<meta name="theme-color" content="#ffffff">
+<title>HijabMatch — Your Colors. Your Style.</title>
 <style>
-:root {
-  --bg: #fbf8f4;
-  --ink: #302d2a;
-  --muted: #81766e;
-  --accent: #75816a;
-  --line: #e9e1d8;
-  --rose: #ead6d0;
+:root{
+  --bg:#ffffff;--ink:#202026;--muted:#70707b;--accent:#642d55;--accent-dark:#4c2040;
+  --line:#e8e6eb;--soft:#f7f5f8;--lavender:#eee7f1;--radius:18px;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: Inter, Arial, sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;border-bottom:1px solid var(--line);background:rgba(255,255,255,.94)}
+.logo{font-size:23px;font-weight:750;letter-spacing:-1.1px}.logo span{color:var(--accent)}
+nav{display:flex;gap:28px;font-size:12px;font-weight:650;color:#55545e}
+nav a:hover{color:var(--accent)}
+.hero{max-width:1200px;margin:auto;padding:78px 28px 72px;display:grid;grid-template-columns:1.03fr .97fr;gap:60px;align-items:center}
+.eyebrow{font-size:10px;letter-spacing:2.3px;text-transform:uppercase;font-weight:800;color:var(--accent)}
+h1{font-size:clamp(48px,6vw,82px);line-height:.99;letter-spacing:-4px;font-weight:650;margin:22px 0}
+h1 em{font-family:Georgia,serif;font-weight:400;color:var(--accent);letter-spacing:-3px}
+p{font-size:14px;line-height:1.8;color:var(--muted)}
+.hero-copy p{max-width:460px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:white;border:1px solid var(--accent);border-radius:999px;padding:14px 21px;font-size:12px;font-weight:750;cursor:pointer;transition:.2s}
+.button:hover{background:var(--accent-dark);transform:translateY(-1px)}
+.button.secondary{background:#fff;color:var(--ink);border-color:var(--line)}
+.hero-visual{min-height:430px;border-radius:220px 220px 22px 22px;background:#f0edf3;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-visual img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0}
+.hero-visual:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(22,16,25,.55))}
+.visual-label{position:absolute;z-index:1;bottom:25px;left:25px;right:25px;color:#fff;display:flex;justify-content:space-between;align-items:end;gap:10px}
+.visual-label strong{font:25px Georgia,serif;font-weight:400}.visual-label span{font-size:10px;letter-spacing:1.4px;text-transform:uppercase}
+main{max-width:1050px;margin:auto;padding:0 24px 80px}
+.section-head{margin:35px 0 25px}.section-head h2{font-size:clamp(32px,4vw,46px);letter-spacing:-1.8px;font-weight:600;margin:12px 0}
+.section-head p{max-width:650px;margin:8px 0}
+.panel{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:#fff;margin-bottom:18px}
+.panel-title{font-size:15px;font-weight:750;margin:0 0 7px}
+.helper{font-size:12px;line-height:1.7;margin:5px 0 18px}
+.upload{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.preview{width:112px;height:136px;object-fit:cover;border-radius:12px;background:var(--soft);border:1px dashed #c8c2ce}
+input[type=file]{max-width:100%;font-size:12px;margin:8px 0}
+.upload-note{max-width:540px}
+.choices{display:flex;flex-wrap:wrap;gap:9px}
+.choice{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;cursor:pointer;font-size:12px;color:var(--ink)}
+.choice.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.swatch-card{min-width:0;cursor:pointer;border:1px solid var(--line);border-radius:13px;padding:7px;background:#fff;text-align:left;transition:.18s}
+.swatch-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px #24152a0c}
+.swatch-card.active{border:2px solid var(--accent);padding:6px;box-shadow:0 0 0 3px #642d5514}
+.swatch{height:90px;border-radius:8px}
+.color-name{font-size:12px;font-weight:750;margin:10px 3px 2px}.color-hex{font-size:10px;color:var(--muted);margin:0 3px 4px}
+.faceoff{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.faceoff-card{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff;min-width:0}
+.faceoff-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.mini-swatch{width:34px;height:34px;border-radius:50%;border:1px solid #00000012;flex:none}
+.faceoff-card h3{font-size:13px;margin:0 0 3px}.faceoff-card small{font-size:10px;color:var(--muted)}
+.face-placeholder{height:160px;border-radius:9px;background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.face-placeholder img{width:100%;height:100%;object-fit:cover;display:none}
+.face-placeholder .placeholder-text{font-size:11px;color:var(--muted);text-align:center;padding:12px}
+.face-placeholder .color-overlay{position:absolute;inset:0;opacity:.24;mix-blend-mode:color;pointer-events:none}
+.faceoff-caption{font-size:11px;line-height:1.6;margin:13px 0 0}
+.result{display:none;padding:18px;border-radius:13px;background:var(--soft);margin-top:18px}.result.show{display:block}
+.result strong{color:var(--accent)}
+.materials{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.material{border:1px solid var(--line);border-radius:12px;padding:13px 9px;text-align:center;background:#fff;cursor:pointer}
+.material.active{border-color:var(--accent);background:#f8f2f7}
+.material span{display:block;font-size:12px;font-weight:750}.material small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.note{font-size:11px;color:var(--muted);line-height:1.7}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.feature{border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff}
+.feature-number{font-size:10px;color:var(--accent);letter-spacing:1.4px;font-weight:800}
+.feature h3{font:22px Georgia,serif;font-weight:400;margin:14px 0 7px}.feature p{font-size:12px;margin:0}
+footer{border-top:1px solid var(--line);padding:26px 7%;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:11px}
+@media(max-width:760px){
+ header{height:66px;padding:0 5%}nav{gap:12px;font-size:10px}.logo{font-size:20px}
+ .hero{grid-template-columns:1fr;padding:48px 22px 44px;gap:28px}.hero-visual{min-height:350px;max-height:430px}
+ h1{letter-spacing:-2.8px}.hero-visual{border-radius:180px 180px 18px 18px}
+ main{padding:0 17px 55px}.panel{padding:18px}
+ .palette{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.swatch{height:84px}
+ .materials{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:1fr}
+ .faceoff{gap:8px}.faceoff-card{padding:9px}.face-placeholder{height:125px}
 }
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 23px 7%;
-  border-bottom: 1px solid var(--line);
-}
-.logo { font-family: Georgia, serif; font-size: 25px; }
-.logo span { color: var(--accent); }
-nav { display: flex; gap: 25px; font-size: 13px; }
-nav a { color: var(--ink); text-decoration: none; }
-.hero {
-  max-width: 1150px;
-  margin: auto;
-  padding: 65px 24px 45px;
-  display: grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap: 45px;
-  align-items: center;
-}
-.eyebrow {
-  color: var(--accent);
-  letter-spacing: 3px;
-  font-size: 11px;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-h1 {
-  font: 500 clamp(42px, 6vw, 70px)/1.06 Georgia, serif;
-  letter-spacing: -2px;
-  margin: 20px 0;
-}
-h1 em { color: var(--accent); font-weight: 400; }
-p { line-height: 1.8; color: var(--muted); font-size: 14px; }
-.hero p { max-width: 440px; }
-.button {
-  display: inline-block;
-  background: var(--accent);
-  color: white;
-  padding: 15px 23px;
-  border: 0;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  text-decoration: none;
-}
-.hero-art {
-  background: #eee5da;
-  min-height: 390px;
-  border-radius: 48% 48% 5px 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 28px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.art-circle {
-  width: 185px;
-  height: 225px;
-  border-radius: 48% 48% 42% 42%;
-  background: #b7a18e;
-  display: grid;
-  place-items: center;
-  font-size: 68px;
-  margin-bottom: 20px;
-  border: 9px solid #d4c4b3;
-}
-.art-note { font: 22px Georgia, serif; }
-main { max-width: 1000px; margin: auto; padding: 20px 24px 70px; }
-.section-head { margin: 35px 0 25px; }
-h2 { font: 36px Georgia, serif; font-weight: 400; margin: 12px 0; }
-.panel {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  padding: 26px;
-  margin-bottom: 22px;
-}
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 24px 0;
-}
-.step {
-  background: #f8f4ef;
-  border-radius: 6px;
-  padding: 15px;
-  font-size: 12px;
-  color: var(--muted);
-}
-.step strong { display: block; color: var(--ink); margin-bottom: 6px; }
-label { font-size: 13px; display: block; margin-bottom: 10px; }
-.upload {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.preview {
-  width: 110px;
-  height: 130px;
-  object-fit: cover;
-  border-radius: 7px;
-  background: #f2ebe3;
-  border: 1px dashed #cfc2b5;
-}
-input[type=file] { max-width: 100%; font-size: 12px; }
-.undertones { display: flex; flex-wrap: wrap; gap: 10px; }
-.choice {
-  padding: 11px 16px;
-  border: 1px solid var(--line);
-  border-radius: 30px;
-  background: white;
-  cursor: pointer;
-  color: var(--ink);
-}
-.choice.active {
-  background: #e7ebdf;
-  border-color: var(--accent);
-}
-.palette {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-top: 22px;
-}
-.swatch {
-  height: 100px;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 3px solid transparent;
-}
-.swatch.active { border-color: var(--ink); outline: 2px solid white; }
-.color-name { font-size: 12px; margin-top: 9px; font-weight: 600; }
-.color-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-.result {
-  display: none;
-  margin-top: 24px;
-  padding: 20px;
-  background: #f6f2eb;
-  border-radius: 6px;
-}
-.result.show { display: block; }
-.selected-chip {
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  vertical-align: middle;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-.shop-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-.shop {
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  padding: 18px;
-  background: white;
-}
-.shop-icon { font-size: 26px; }
-.shop h3 { font: 21px Georgia, serif; font-weight: 400; }
-.shop p { font-size: 12px; }
-footer {
-  border-top: 1px solid var(--line);
-  padding: 28px 7%;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 12px;
-}
-@media(max-width:700px) {
-  nav { gap: 12px; font-size: 11px; }
-  .hero { grid-template-columns: 1fr; padding-top: 40px; gap: 25px; }
-  .hero-art { min-height: 270px; }
-  .art-circle { width: 130px; height: 150px; font-size: 50px; }
-  .steps { grid-template-columns: 1fr; }
-  .palette { grid-template-columns: repeat(2, 1fr); }
-  .shop-grid { grid-template-columns: 1fr; }
-  h2 { font-size: 30px; }
-}
+@media(max-width:420px){nav a:last-child{display:none}.hero-visual{min-height:300px}.faceoff{grid-template-columns:1fr}.face-placeholder{height:170px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">Hijab<span>Match</span></div>
-  <nav>
-    <a href="#discover">Discover</a>
-    <a href="#palette">Color guide</a>
-    <a href="#shop">Shopping</a>
-  </nav>
+  <a class="logo" href="#">Hijab<span>Match</span></a>
+  <nav><a href="#discover">Discover</a><a href="#faceoff">Color Face-Off</a><a href="#materials">Fabrics</a></nav>
 </header>
-
 <section class="hero">
-  <div>
-    <div class="eyebrow">Your personal hijab color guide</div>
-    <h1>Find the colors<br>that feel <em>like you.</em></h1>
-    <p>
-      Discover hijab shades to explore, find inspiration for your outfits,
-      and make your next scarf choice with more confidence.
-      Created by a hijab wearer, for hijab wearers.
-    </p>
-    <a class="button" href="#discover">Find my colors &nbsp; →</a>
+  <div class="hero-copy">
+    <div class="eyebrow">Your personal hijab style studio</div>
+    <h1>Your colors.<br>Your style.<br><em>Your way.</em></h1>
+    <p>Explore expressive hijab colors, compare your favorites, and find the shades that feel like you. A personal style journey, one color at a time.</p>
+    <a class="button" href="#discover">Explore your palette <span>↗</span></a>
   </div>
-  <div class="hero-art">
-    <div class="art-circle">✿</div>
-    <div class="art-note">A little more you, every day.</div>
-    <p>Personal style begins with a color.</p>
+  <div class="hero-visual">
+    <img src="https://images.unsplash.com/photo-1584184924103-e310d9dc82fc?auto=format&fit=crop&w=1000&q=85" alt="Fashion portrait in a beautifully styled hijab" onerror="this.style.display='none'">
+    <div class="visual-label"><div><span>Discover your signature</span><br><strong>Color, with confidence.</strong></div><span>01 / 03</span></div>
   </div>
 </section>
-
 <main>
   <section id="discover">
     <div class="section-head">
-      <div class="eyebrow">01 — Discover your palette</div>
-      <h2>Let's find your colors</h2>
-      <p>Upload a photo for your styling session, then choose a tone to explore a personalized color palette.</p>
+      <div class="eyebrow">01 — Start with you</div>
+      <h2>Let's find your colors.</h2>
+      <p>Choose a clear portrait, then explore colors you love. Your photo stays in this browser in this prototype; it is not sent to an AI service.</p>
     </div>
-
     <div class="panel">
-      <label><strong>Your photo</strong></label>
+      <div class="panel-title">Your portrait</div>
+      <p class="helper">For the clearest comparison, use a sharp photo in soft natural daylight, facing the camera, without filters or strong shadows. Pull hair away from your face if comfortable. You do not need to uncover your hair or remove your hijab.</p>
       <div class="upload">
-        <img id="preview" class="preview" alt="Your photo preview"
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='130'%3E%3Crect width='100%25' height='100%25' fill='%23f2ebe3'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='30' fill='%23978b7c'%3E%2B%3C/text%3E%3C/svg%3E">
-        <div>
-          <input id="photo" type="file" accept="image/*">
-          <p>Choose a well-lit photo. In this demo, your image is only previewed in this browser; it is not uploaded to an AI service.</p>
-        </div>
+        <img id="preview" class="preview" alt="Photo preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='136'%3E%3Crect width='100%25' height='100%25' fill='%23f7f5f8'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='30' fill='%23642d55'%3E%2B%3C/text%3E%3C/svg%3E">
+        <div class="upload-note"><input id="photo" type="file" accept="image/*"><p class="note">This version only displays a local preview. AI analysis and virtual try-on are not connected yet.</p></div>
       </div>
     </div>
-
     <div class="panel">
-      <label><strong>Which description feels closest to your skin tone?</strong></label>
-      <p>This is a starting point for exploring colors, not an automatic skin analysis.</p>
-      <div class="undertones">
-        <button class="choice active" data-tone="warm">Warm / golden</button>
+      <div class="panel-title">How would you describe your skin tone?</div>
+      <p class="helper">Use this as a starting point, not a diagnosis. Lighting and camera settings can change how skin appears.</p>
+      <div class="choices" id="tone-choices">
+        <button class="choice active" data-tone="all">Show all colors</button>
+        <button class="choice" data-tone="warm">Warm / golden</button>
         <button class="choice" data-tone="cool">Cool / rosy</button>
         <button class="choice" data-tone="neutral">Neutral / balanced</button>
         <button class="choice" data-tone="deep">Deep / rich</button>
       </div>
-      <div class="steps">
-        <div class="step"><strong>01. Explore</strong>Choose a tone to begin.</div>
-        <div class="step"><strong>02. Discover</strong>Explore suggested scarf colors.</div>
-        <div class="step"><strong>03. Style</strong>Choose a shade you love.</div>
-      </div>
     </div>
   </section>
 
-  <section id="palette">
+  <section id="faceoff">
     <div class="section-head">
-      <div class="eyebrow">02 — Your color inspiration</div>
-      <h2>Colors to fall in love with</h2>
-      <p id="palette-intro">Explore warm, earthy colors and find your favorite.</p>
+      <div class="eyebrow">02 — The signature feature</div>
+      <h2>Color Face-Off.</h2>
+      <p>Pick two shades and compare them side by side. There is no wrong answer — the goal is to discover what you love wearing.</p>
     </div>
     <div class="panel">
+      <div class="panel-title">Choose up to two colors</div>
+      <p class="helper">Tap one color to place it in the first slot, then tap another to compare. This is a color-selection preview, not a realistic AI try-on yet.</p>
       <div id="palette-grid" class="palette"></div>
-      <div id="result" class="result">
-        <div class="eyebrow">Your selected shade</div>
-        <h2 id="selected-name">Olive Green</h2>
-        <p id="selected-desc"></p>
-        <p><span id="selected-chip" class="selected-chip"></span>
-          <span id="selected-hex"></span></p>
-        <button class="button" onclick="copyColor()">Copy color code</button>
+      <div class="faceoff">
+        <div class="faceoff-card">
+          <div class="faceoff-top"><div class="mini-swatch" id="mini-a" style="background:#642d55"></div><div><h3 id="name-a">Choose a color</h3><small id="hex-a">Color A</small></div></div>
+          <div class="face-placeholder"><img id="face-a" alt="Portrait color preview"><div class="placeholder-text" id="placeholder-a">Upload a portrait above to preview it here.</div><div class="color-overlay" id="overlay-a" style="background:#642d55"></div></div>
+          <p class="faceoff-caption">Option A — your first color to explore.</p>
+        </div>
+        <div class="faceoff-card">
+          <div class="faceoff-top"><div class="mini-swatch" id="mini-b" style="background:#176b55"></div><div><h3 id="name-b">Choose a second color</h3><small id="hex-b">Color B</small></div></div>
+          <div class="face-placeholder"><img id="face-b" alt="Portrait color preview"><div class="placeholder-text" id="placeholder-b">Your second option will appear here.</div><div class="color-overlay" id="overlay-b" style="background:#176b55"></div></div>
+          <p class="faceoff-caption">Option B — compare the mood and contrast.</p>
+        </div>
       </div>
+      <div id="result" class="result"><strong>Your comparison is ready.</strong><p id="result-text" class="helper" style="margin-bottom:0"></p></div>
+      <p class="note">The current preview applies a translucent color overlay to your photo for concept demonstration. It does not simulate fabric, draping, or real AI try-on.</p>
     </div>
   </section>
 
-  <section id="shop">
+  <section id="materials">
     <div class="section-head">
-      <div class="eyebrow">03 — From inspiration to your wardrobe</div>
-      <h2>Your next favorite hijab</h2>
-      <p>Our future goal is to connect color inspiration with real products from online stores.</p>
+      <div class="eyebrow">03 — The fabric makes the feeling</div>
+      <h2>Choose your fabric mood.</h2>
+      <p>The same color can feel different in different materials. Explore the mood each fabric is often associated with.</p>
     </div>
-    <div class="shop-grid">
-      <div class="shop">
-        <div class="shop-icon">✿</div>
-        <h3>Everyday essentials</h3>
-        <p>Explore soft, versatile shades for everyday outfits.</p>
-        <span class="eyebrow">Store links coming soon</span>
+    <div class="panel">
+      <div class="materials" id="materials-list">
+        <button class="material active" data-material="Chiffon"><span>Chiffon</span><small>Airy · Flowing</small></button>
+        <button class="material" data-material="Jersey"><span>Jersey</span><small>Soft · Everyday</small></button>
+        <button class="material" data-material="Cotton"><span>Cotton</span><small>Matte · Easy</small></button>
+        <button class="material" data-material="Modal"><span>Modal</span><small>Smooth · Draped</small></button>
+        <button class="material" data-material="Satin"><span>Satin</span><small>Polished · Occasion</small></button>
       </div>
-      <div class="shop">
-        <div class="shop-icon">❋</div>
-        <h3>Elegant occasions</h3>
-        <p>Discover rich colors for special moments and celebrations.</p>
-        <span class="eyebrow">Store links coming soon</span>
-      </div>
-      <div class="shop">
-        <div class="shop-icon">✧</div>
-        <h3>Build your palette</h3>
-        <p>Save your favorite color ideas for your next shopping trip.</p>
-        <span class="eyebrow">More features coming soon</span>
-      </div>
+      <p id="material-description" class="helper" style="margin:16px 0 0">Chiffon often creates a light, flowing look. Actual drape depends on the weave, weight, and styling.</p>
     </div>
   </section>
-  <p style="font-size:11px">Color suggestions are for inspiration only. Personal preference, lighting, fabric, and outfit colors can all influence how a shade looks.</p>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">Made for your everyday</div>
+      <h2>More than a color picker.</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature"><div class="feature-number">01 / EXPLORE</div><h3>Your color story</h3><p>Discover a range of shades, from quiet everyday neutrals to bold statement colors.</p></div>
+      <div class="feature"><div class="feature-number">02 / COMPARE</div><h3>Color Face-Off</h3><p>Keep two favorites side by side while you decide what feels most like you.</p></div>
+      <div class="feature"><div class="feature-number">03 / STYLE</div><h3>Fabric mood</h3><p>Explore how material can change the feel of a hijab, from relaxed to occasion-ready.</p></div>
+    </div>
+  </section>
+  <p class="note" style="margin-top:24px">HijabMatch is an early prototype. Color suggestions are for inspiration, not definitive judgments about appearance. Results can vary with lighting, screens, fabric, makeup, and personal preference.</p>
 </main>
-
-<footer>
-  <div class="logo">Hijab<span>Match</span></div>
-  <div>Created with care by a hijab wearer.</div>
-  <div>Early prototype · 2026</div>
-</footer>
-
+<footer><div class="logo">Hijab<span>Match</span></div><div>Your colors. Your style. Your way.</div><div>Early prototype · 2026</div></footer>
 <script>
-const palettes = {
-  warm: {
-    intro: "Warm, earthy shades to explore with golden and warm-toned looks.",
-    colors: [
-      ["Olive Green","#78805B","Pairs beautifully with cream, beige and brown."],
-      ["Terracotta","#BD755D","A warm accent for neutral outfits."],
-      ["Cream","#F0E3C9","A soft, timeless everyday option."],
-      ["Mocha","#80604F","A rich neutral for effortless styling."],
-      ["Sage","#A8AE91","A gentle green for a calm look."],
-      ["Rust","#A54F35","A deeper, expressive warm shade."],
-      ["Camel","#C5A176","Easy to combine with earthy colors."],
-      ["Teal","#397D78","A contrasting color to experiment with."]
-    ]
-  },
-  cool: {
-    intro: "Try rosy, jewel and cool neutral shades as a starting point.",
-    colors: [
-      ["Dusty Rose","#C78F98","A muted pink for soft styling."],
-      ["Lavender","#B6A7CC","A delicate shade to explore."],
-      ["Navy","#303E60","A versatile deep blue."],
-      ["Berry","#8D405C","A rich accent for simple outfits."],
-      ["Silver Grey","#B7B7BC","A cool neutral for layering."],
-      ["Plum","#69466E","A deeper, elegant option."],
-      ["Powder Blue","#B7D0E0","A light shade for fresh looks."],
-      ["Soft White","#F2F0EB","A clean neutral to experiment with."]
-    ]
-  },
-  neutral: {
-    intro: "Balanced neutrals and a mix of warm and cool shades to explore.",
-    colors: [
-      ["Taupe","#A59587","An easy shade for everyday wear."],
-      ["Mauve","#AD879B","A muted color with personality."],
-      ["Sage","#A8AE91","A relaxed, nature-inspired option."],
-      ["Chocolate","#684B3B","A rich, versatile neutral."],
-      ["Dusty Blue","#7F9EB4","A calm alternative to grey."],
-      ["Rose","#C78D91","A soft accent color."],
-      ["Sand","#D6C1A2","A gentle neutral for layering."],
-      ["Teal","#397D78","A colorful option to try."]
-    ]
-  },
-  deep: {
-    intro: "Explore rich jewel tones, deep neutrals and luminous contrasts.",
-    colors: [
-      ["Emerald","#176B55","A vivid, rich green."],
-      ["Burgundy","#762F46","A classic deep accent."],
-      ["Cobalt","#3156A4","A striking blue to experiment with."],
-      ["Mustard","#C79C36","A warm, bright statement shade."],
-      ["Ivory","#F0E4CC","A light contrast for deeper colors."],
-      ["Plum","#69466E","A rich, elegant purple."],
-      ["Forest","#285744","A deep, nature-inspired green."],
-      ["Copper","#B96F4A","A warm accent for creative outfits."]
-    ]
-  }
+const colors = [
+  {name:"Cherry",hex:"#9F2348",group:["cool","deep"]},
+  {name:"Cobalt",hex:"#3156A4",group:["cool","deep"]},
+  {name:"Emerald",hex:"#176B55",group:["warm","deep"]},
+  {name:"Lavender",hex:"#B6A7CC",group:["cool","neutral"]},
+  {name:"Plum",hex:"#69466E",group:["cool","deep"]},
+  {name:"Olive",hex:"#78805B",group:["warm","neutral"]},
+  {name:"Silver grey",hex:"#B7B7BC",group:["cool","neutral"]},
+  {name:"Terracotta",hex:"#BD755D",group:["warm"]},
+  {name:"Dusty rose",hex:"#C78F98",group:["cool","neutral"]},
+  {name:"Chocolate",hex:"#684B3B",group:["warm","deep","neutral"]},
+  {name:"Teal",hex:"#287D79",group:["warm","cool","deep"]},
+  {name:"Ivory",hex:"#F0E8D9",group:["warm","neutral","deep"]}
+];
+let tone="all", first=null, second=null, photoData=null;
+const $=id=>document.getElementById(id);
+function renderColors(){
+  const list=tone==="all"?colors:colors.filter(c=>c.group.includes(tone));
+  $("palette-grid").innerHTML=list.map(c=>{
+    const chosen=(first&&first.name===c.name)||(second&&second.name===c.name);
+    const slot=first&&first.name===c.name?"A":second&&second.name===c.name?"B":"";
+    return `<button class="swatch-card ${chosen?"active":""}" type="button" aria-label="Select ${c.name}" data-name="${c.name}">
+      <div class="swatch" style="background:${c.hex}"></div><div class="color-name">${c.name}${slot?" · "+slot:""}</div><div class="color-hex">${c.hex}</div></button>`;
+  }).join("");
+  document.querySelectorAll(".swatch-card").forEach(btn=>btn.addEventListener("click",()=>chooseColor(btn.dataset.name)));
+}
+function chooseColor(name){
+  const c=colors.find(x=>x.name===name);
+  if(first&&first.name===name){first=second;second=null;}
+  else if(second&&second.name===name){second=null;}
+  else if(!first){first=c;}
+  else if(!second){second=c;}
+  else{first=second;second=c;}
+  updateFaceOff();renderColors();
+}
+function updateSlot(slot,c){
+  const isA=slot==="a", name=$(isA?"name-a":"name-b"),hex=$(isA?"hex-a":"hex-b"),mini=$(isA?"mini-a":"mini-b"),overlay=$(isA?"overlay-a":"overlay-b"),img=$(isA?"face-a":"face-b"),placeholder=$(isA?"placeholder-a":"placeholder-b");
+  if(!c){name.textContent=isA?"Choose a color":"Choose a second color";hex.textContent=isA?"Color A":"Color B";return;}
+  name.textContent=c.name;hex.textContent=c.hex;mini.style.background=c.hex;overlay.style.background=c.hex;
+  if(photoData){img.src=photoData;img.style.display="block";placeholder.style.display="none";}
+}
+function updateFaceOff(){
+  updateSlot("a",first);updateSlot("b",second);
+  if(first&&second){
+    $("result").classList.add("show");
+    $("result-text").textContent=`You're comparing ${first.name} (${first.hex}) with ${second.name} (${second.hex}). Notice which color you personally prefer; this prototype does not automatically judge which shade suits you best.`;
+  }else $("result").classList.remove("show");
+}
+$("tone-choices").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+  $("tone-choices").querySelectorAll("button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");tone=b.dataset.tone;renderColors();
+}));
+$("photo").addEventListener("change",e=>{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  if(!file.type.startsWith("image/")){alert("Please choose an image file.");return;}
+  const reader=new FileReader();reader.onload=event=>{
+    photoData=event.target.result;$("preview").src=photoData;
+    ["a","b"].forEach(slot=>{
+      const img=$("face-"+slot),placeholder=$("placeholder-"+slot);
+      img.src=photoData;img.style.display="block";placeholder.style.display="none";
+    });
+  };reader.readAsDataURL(file);
+});
+const materialText={
+  Chiffon:"Chiffon often creates a light, flowing look. Actual drape depends on the weave, weight, and styling.",
+  Jersey:"Jersey is often chosen for its stretch and easy everyday wear. Thickness and finish vary by product.",
+  Cotton:"Cotton can feel breathable and matte, with a more structured or casual look depending on the weave.",
+  Modal:"Modal is often smooth and soft with fluid drape, though the exact finish depends on the fabric blend.",
+  Satin:"Satin has a smoother surface and more sheen, which can create a polished or occasion-ready mood."
 };
-let currentTone = "warm";
-let selectedColor = null;
-
-function renderPalette() {
-  const data = palettes[currentTone];
-  document.getElementById("palette-intro").textContent = data.intro;
-  document.getElementById("palette-grid").innerHTML = data.colors.map((c,i) => `
-    <div>
-      <div class="swatch ${selectedColor && selectedColor[0]===c[0] ? "active":""}"
-        style="background:${c[1]}" role="button" tabindex="0"
-        aria-label="Choose ${c[0]}" onclick="selectColor(${i})"
-        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectColor(${i})}"></div>
-      <div class="color-name">${c[0]}</div>
-      <div class="color-desc">${c[2]}</div>
-    </div>`).join("");
-}
-function selectColor(i) {
-  selectedColor = palettes[currentTone].colors[i];
-  document.getElementById("selected-name").textContent = selectedColor[0];
-  document.getElementById("selected-desc").textContent = selectedColor[2];
-  document.getElementById("selected-chip").style.background = selectedColor[1];
-  document.getElementById("selected-hex").textContent = selectedColor[1];
-  document.getElementById("result").classList.add("show");
-  renderPalette();
-}
-document.querySelectorAll(".choice").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".choice").forEach(b=>b.classList.remove("active"));
-    button.classList.add("active");
-    currentTone = button.dataset.tone;
-    selectedColor = null;
-    document.getElementById("result").classList.remove("show");
-    renderPalette();
-  });
-});
-document.getElementById("photo").addEventListener("change", event => {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (!file.type.startsWith("image/")) {
-    alert("Please choose an image file.");
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => document.getElementById("preview").src = e.target.result;
-  reader.readAsDataURL(file);
-});
-function copyColor() {
-  if (!selectedColor) return;
-  const hex = selectedColor[1];
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(hex).then(() => alert("Copied: " + hex))
-      .catch(() => prompt("Copy this color code:", hex));
-  } else {
-    prompt("Copy this color code:", hex);
-  }
-}
-renderPalette();
+document.querySelectorAll(".material").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".material").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  $("material-description").textContent=materialText[b.dataset.material];
+}));
+renderColors();
 </script>
 </body>
 </html>

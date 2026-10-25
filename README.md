@@ -1,17 +1,25 @@
-# HijabMatch — full UI refresh
+# HijabMatch — frontend MVP v2
 
-Files:
-- `index.html`: responsive landing page, profile form, color suggestions, save palette, material selector, Pro lookbook concept and journal.
-- `api/scarf.js`: server-side YouCam task-polling scaffold. It keeps the API key out of the browser. POST intentionally returns a clear setup message until secure image upload is implemented.
+## What is included
+- Responsive landing page and navigation
+- Photo preview that stays in the browser
+- Preference-based color suggestions (rule-based, not AI diagnosis)
+- Searchable color catalog with warm/cool/deep/neutral filters
+- Saved colors and saved lookbook ideas persisted in this browser via localStorage
+- Fabric preference selector and curated lookbook cards
+- Honest AI try-on placeholder: no API request is made and no YouCam credits are spent
 
 ## Deploy to Vercel
-1. Replace the repository root `index.html` with this one.
-2. Add a root-level folder named `api`, and place `scarf.js` inside it.
-3. Keep `YOUCAM_API_KEY` in Vercel Environment Variables. Never paste it into HTML or commit it to GitHub.
-4. Commit changes. Vercel should deploy automatically.
+1. Download and unzip the project.
+2. Replace the root `index.html` in your existing GitHub repository with this `index.html`.
+3. Keep your existing `api/check.js` and Vercel environment variable untouched. This frontend version does not call the API yet.
+4. Commit and push the change; Vercel should redeploy automatically.
 
-## Honest functionality
-- Photo preview stays in the browser until AI try-on is explicitly started.
-- Color recommendations are curated style guidance, not scientific skin-tone analysis.
-- Material selection updates the chosen preference; it does not simulate fabric yet.
-- AI try-on is not yet enabled: YouCam Scarf requires a user photo plus a suitable scarf reference image and task polling. The POST endpoint deliberately does not fake success or spend API units.
+## Important limits in this stage
+- Color suggestions use the user's selected preferences; they are not face/skin analysis.
+- The material selector updates a preference and copy; it does not simulate fabric on a photo.
+- Lookbook cards are styling concepts, not AI-generated try-on images.
+- Uploaded photos are previewed locally. The AI button displays a placeholder message and does not upload the photo.
+- Favorites are saved in the current browser only; they do not sync across devices.
+
+Next stage: connect the documented YouCam scarf virtual try-on flow securely after the product flow and reference images are ready. Keep `YOUCAM_API_KEY` on the server only.
